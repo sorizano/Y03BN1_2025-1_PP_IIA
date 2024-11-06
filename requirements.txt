@@ -1,4 +1,4 @@
-streamlit==1.23.1
-pandas==2.0.3
+streamlit
+pandas
 supabase
-altair==5.0.1
+altair
