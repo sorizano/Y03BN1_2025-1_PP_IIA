@@ -41,7 +41,7 @@ if not df.empty:
     #gráfico de barras: ventas por producto
     grafico_barras = alt.Chart(df_filtrado).mark_bar().encode(
         x='producto:N',
-        y='cantidad:Q'
+        y='cantidad:Q',
         color='producto:N'
     ).properties(
         title='Cantidad vendida por Producto'
