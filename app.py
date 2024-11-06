@@ -10,25 +10,33 @@ supabase: Client = create_client(url, key)
 
 # Cargar datos de Supabase
 def cargar_datos_supabase():
-    response = supabase.table("ventas_cafe").select("*").execute()
-    
-    # Verificar si la respuesta contiene errores
-    if response.error:
-        st.error(f"Error al cargar datos desde Supabase: {response.error}")
+    try:
+        #Realizamos la consulta a supabase
+        response = supabase.table("ventas_cafe").select("*").execute()
+
+        # Verificar si no hay errore en la respuesta
+        if response.data:
+            return pd.DataFrame(response.data)
+        else:
+            st.error("No se encontraron datos en la tabla 'ventas_cafe'.")
+    except Exception as e:
+        st.error(f"No se encontraron datos desde supabase: {str(e)}")
         return pd.DataFrame()
-    else:
-        return pd.DataFrame(response.data)
 
 # Datos
 df = cargar_datos_supabase()
 
 # Interfaz de Streamlit
-st.title("Dashboard de Ventas de Café")
-st.subheader("Análisis de Ventas de Café")
+if not df.empty:
+    st.title("Dashboard de Ventas de Café")
+    st.subheader("Análisis de Ventas de Café")
 
-# Filtro por fecha
-fecha_seleccionada = st.date_input("Selecciona una fecha", value=pd.to_datetime("2024-11-01"))
-df_filtrado = df[df['fecha'] == fecha_seleccionada]
+    # Filtro por fecha
+    fecha_seleccionada = st.date_input("Selecciona una fecha", value=pd.to_datetime("2024-11-01"))
+    df_filtrado = df[df['fecha'] == fecha_seleccionada]
 
-# Mostrar datos filtrados
-st.write("Datos de ventas para la fecha seleccionada:", df_filtrado)
+    # Mostrar datos filtrados
+    st.write("Datos de ventas para la fecha seleccionada:", df_filtrado)
+    
+else:
+    st.error("No se pudieron cargar los datos.")
