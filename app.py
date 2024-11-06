@@ -37,6 +37,16 @@ if not df.empty:
 
     # Mostrar datos filtrados
     st.write("Datos de ventas para la fecha seleccionada:", df_filtrado)
-    
+
+    #gráfico de barras: ventas por producto
+    grafico_barras = alt.Chart(df_filtrado).mark_bar().encode(
+        x='producto:N',
+        y='cantidad:Q'
+        color='producto:N'
+    ).properties(
+        title='Cantidad vendida por Producto'
+    )
+    st.altair_chart(grafico_barras, use_container_width=True)
+
 else:
     st.error("No se pudieron cargar los datos.")
