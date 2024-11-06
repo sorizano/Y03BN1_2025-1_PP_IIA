@@ -12,9 +12,6 @@ supabase: Client = create_client(url, key)
 def cargar_datos_supabase():
     response = supabase.table("ventas_cafe").select("*").execute()
     
-    # Depurar: imprimir la respuesta
-    st.write("Respuesta de Supabase:", response)
-    
     # Verificar si la respuesta contiene errores o está vacía
     if hasattr(response, 'error') and response.error:
         st.error(f"Error al cargar datos desde Supabase: {response.error}")
@@ -23,7 +20,10 @@ def cargar_datos_supabase():
         st.warning("No se encontraron datos en la tabla 'ventas_cafe'.")
         return pd.DataFrame()
     else:
-        return pd.DataFrame(response.data)
+        # Convertir a DataFrame y asegurar que la columna 'fecha' sea datetime
+        df = pd.DataFrame(response.data)
+        df['fecha'] = pd.to_datetime(df['fecha'])  # Asegurarse que sea datetime
+        return df
 
 # Datos
 df = cargar_datos_supabase()
@@ -34,7 +34,9 @@ st.subheader("Análisis de Ventas de Café")
 
 # Filtro por fecha
 fecha_seleccionada = st.date_input("Selecciona una fecha", value=pd.to_datetime("2024-11-01"))
-df_filtrado = df[df['fecha'] == fecha_seleccionada]
+
+# Filtrar el DataFrame por la fecha seleccionada
+df_filtrado = df[df['fecha'].dt.date == fecha_seleccionada]  # Ignorar la hora para comparar solo la fecha
 
 # Mostrar datos filtrados
 st.write("Datos de ventas para la fecha seleccionada:", df_filtrado)
