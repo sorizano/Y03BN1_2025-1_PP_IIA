@@ -11,11 +11,13 @@ supabase: Client = create_client(url, key)
 #Cargar datos de Supabase
 def cargar_datos_supabase():
     response = supabase.table("ventas_cafe").select("*").execute()
-    if response.status_code == 200:
-        return pd.DataFrame(response.data)
-    else:
-        st.error("Error al cargar datos desde Supabase")
+
+    #verificar si la respuesta contiene errores
+    if response.error:
+        st.error(f"Error al cargar datos de Supabase: {response.error}")
         return pd.DataFrame()
+    else:
+        return pd.DataFrame(response.data)
 
 #Datos
 df = cargar_datos_supabase()
