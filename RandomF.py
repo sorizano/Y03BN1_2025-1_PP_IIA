@@ -20,7 +20,7 @@ def fetch_data():
     return data
 
 #4. Interfaz Streamlit
-st.title("Nodelo Random Forest")
+st.title("Modelo Random Forest")
 
 #5. Cargando y mostrando datos
 data = fetch_data()
