@@ -58,7 +58,7 @@ y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 st.write(f"Precisión del modelo: {accuracy:.2f}")
 
-#10. preddicón personalizada
+# 10. predicción personalizada
 edad = st.number_input("Edad", min_value=18, max_value=100, value=30)
 salario = st.number_input("Salario", min_value=0, max_value=200000, value=50000)
 estado_civil = st.selectbox("Estado civil", options=["soltero", "casado", "divorciado"])
@@ -68,11 +68,12 @@ input_data = pd.DataFrame({
     "salario": [salario]
 })
 
-prediction = model.predict(input_data)[0]
+# Asegúrate de que la predicción sea un booleano
+prediction = bool(model.predict(input_data)[0])
+
 st.write("¿Comprará el producto?", "Sí" if prediction else "No")
 
-
-#11. Botón para guardar predicción
+# 11. Botón para guardar predicción
 if st.button("Guardar predicción"):
     result = save_prediction_to_supabase(edad, salario, estado_civil, prediction)
 
