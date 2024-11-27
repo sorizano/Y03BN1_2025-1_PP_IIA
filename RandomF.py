@@ -77,9 +77,6 @@ st.write("¿Comprará el producto?", "Sí" if prediction else "No")
 if st.button("Guardar predicción"):
     result = save_prediction_to_supabase(edad, salario, estado_civil, prediction)
 
-    # Mostrar el resultado completo para depuración (opcional)
-    st.write(result)
-
     # Verificar si la respuesta contiene datos
     if result.data:
         st.success("¡Predicción guardada exitosamente!")
