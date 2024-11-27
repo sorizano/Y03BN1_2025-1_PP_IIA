@@ -29,3 +29,34 @@ if data.empty:
 else:
     st.write("Datos cargados desde Supabase:")
     st.dataframe(data)
+
+
+#6. Preprocesamiento de datos
+X = data[['edad', 'salario']]
+X = pd.get_dummies(X)
+y = data['comprado']
+
+#7. División de datos
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+#8. Entrenar el modelo
+model = RandomForestClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+#9. Evaluación del modelo
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+st.write(f"Precisión del modelo: {accuracy:.2f}")
+
+#10. preddicón personalizada
+edad = st.number_input("Edad", min_value=18, max_value=100, value=30)
+salario = st.number_input("Salario", min_value=0, max_value=200000, value=50000)
+estado_civil = st.selectbox("Estado civil", options=["soltero", "casado", "divorciado"])
+
+input_data = pd.DataFrame({
+    "edad": [edad]
+    "salario": [salario]
+})
+
+prediction = model.predict(input_data)[0]
+st.write("¿Comprará el producto?", "Sí" if prediction else "No")
