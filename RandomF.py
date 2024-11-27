@@ -54,7 +54,7 @@ salario = st.number_input("Salario", min_value=0, max_value=200000, value=50000)
 estado_civil = st.selectbox("Estado civil", options=["soltero", "casado", "divorciado"])
 
 input_data = pd.DataFrame({
-    "edad": [edad]
+    "edad": [edad],
     "salario": [salario]
 })
 
