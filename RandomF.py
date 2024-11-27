@@ -77,7 +77,8 @@ st.write("¿Comprará el producto?", "Sí" if prediction else "No")
 if st.button("Guardar predicción"):
     result = save_prediction_to_supabase(edad, salario, estado_civil, prediction)
 
-    if result.status_code == 201:
+    if result.get("error") is None:  # Verificar si no hay errores
         st.success("¡Predicción guardada exitosamente!")
     else:
-        st.error(f"Hubo un error al guardar la predicción: {result}")
+        st.error(f"Hubo un error al guardar la predicción: {result['error']['message']}")
+
