@@ -64,7 +64,7 @@ st.write("¿Comprará el producto?", "Sí" if prediction else "No")
 
 #11. Botón para guardar predicción
 if st.button("Guardar predicción"):
-    result = save_prediction_to_supabase(edad, salario, estado_civil, prefiction)
+    result = save_prediction_to_supabase(edad, salario, estado_civil, prediction)
 
     if result.status_code == 201:
         st.success("¡Predicción guardada exitosamente!")
