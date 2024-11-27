@@ -77,17 +77,14 @@ st.write("¿Comprará el producto?", "Sí" if prediction else "No")
 if st.button("Guardar predicción"):
     result = save_prediction_to_supabase(edad, salario, estado_civil, prediction)
 
-    # Mostrar el resultado completo para depuración
+    # Mostrar el resultado completo para depuración (opcional)
     st.write(result)
 
-    try:
-        if hasattr(result, "error") and result.error is None:
-            st.success("¡Predicción guardada exitosamente!")
-        else:
-            error_message = getattr(result.error, 'message', 'Error desconocido')
-            st.error(f"Hubo un error al guardar la predicción: {error_message}")
-    except AttributeError as e:
-        st.error(f"Error inesperado: {str(e)}")
+    # Verificar si la respuesta contiene datos
+    if result.data:
+        st.success("¡Predicción guardada exitosamente!")
+    else:
+        st.error("Hubo un error al guardar la predicción.")
 
 
 
