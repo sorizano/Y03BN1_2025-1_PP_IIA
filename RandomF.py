@@ -18,6 +18,16 @@ def fetch_data():
     respose = supabase.table("users_data").select("*").execute()
     data = pd.DataFrame(respose.data)
     return data
+#3.1 
+def save_prediction_to_supabase(edad, salario, estado_civil, prediction):
+    data = {
+        "edad": edad,
+        "salario": salario,
+        "estado_civil": estado_civil,
+        "comprado": prediction
+    }
+    respose = supabase.table("users_data").insert(data).execute()
+    return respose
 
 #4. Interfaz Streamlit
 st.title("Modelo Random Forest")
@@ -69,4 +79,4 @@ if st.button("Guardar predicción"):
     if result.status_code == 201:
         st.success("¡Predicción guardada exitosamente!")
     else:
-        st.error("Hubo un error al guardar la predicción")
+        st.error(f"Hubo un error al guardar la predicción: {result}")
